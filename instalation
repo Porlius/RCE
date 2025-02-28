@@ -1,1 +1,6 @@
 winget install Python
+pip install requests
+pip install psutil
+pip install pywin32
+python -m pywin32_postinstall
+python -m pip install --upgrade pip

